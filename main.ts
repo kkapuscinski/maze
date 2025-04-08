@@ -1,5 +1,11 @@
-function collides (hero: Hero) {
-	
+function collides (hero: Hero, heroWantsToMove: Hero, map: Maze) {
+    if (heroWantsToMove.y >= 0 && heroWantsToMove.y < 5 
+        && heroWantsToMove.x >= 0 && heroWantsToMove.x < 5 
+        && map.walls[heroWantsToMove.y][heroWantsToMove.x] != 1 )
+     {
+         hero.x = heroWantsToMove.x;
+         hero.y = heroWantsToMove.y;
+     }
 }
 
 function drawScreen (hero: Hero, map: Maze)
@@ -15,24 +21,26 @@ function drawScreen (hero: Hero, map: Maze)
             {
                 led.plot(i,j)
             }
-            
-          
         }
     }
 }
 
-function moveHero (hero: Hero) {
-    let heroPosition: number[] = []
-    if (input.rotation(Rotation.Roll) >= 15 && hero.x < 4) {
-        hero.x++
-    } else if (input.rotation(Rotation.Roll) <= -15 && hero.x > 0) {
-        hero.x--
+function moveHero (hero: Hero, map: Maze) {
+    let movePosition: Hero ={
+        x: hero.x,
+        y: hero.y,
     }
-    if (input.rotation(Rotation.Pitch) >= 15 && hero.y < 4) {
-        hero.y++
-    } else if (input.rotation(Rotation.Pitch) <= -15 && hero.y > 0) {
-        hero.y--
+    if (input.rotation(Rotation.Roll) >= 15) {
+        movePosition.x++
+    } else if (input.rotation(Rotation.Roll) <= -15) {
+        movePosition.x--
     }
+    if (input.rotation(Rotation.Pitch) >= 15) {
+        movePosition.y++
+    } else if (input.rotation(Rotation.Pitch) <= -15) {
+        movePosition.y--
+    }
+    collides(hero, movePosition, map)
 }
 interface Hero {
     x: number;
@@ -58,6 +66,6 @@ let map: Maze =
 
 
 loops.everyInterval(500, function () {
-    moveHero(hero);
+    moveHero(hero, map);
     drawScreen(hero, map);
 })
