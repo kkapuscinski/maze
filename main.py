@@ -1,10 +1,12 @@
-def on_button_pressed_a():
-    pass
-input.on_button_pressed(Button.A, on_button_pressed_a)
-
-sprite = game.create_sprite(2, 2)
-sprite.turn(Direction.RIGHT, 45)
-sprite.move(1)
+map2 = [[0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 1],
+    [0, 0, 1, 0, 0],
+    [0, 1, 0, 0, 0]]
+for i in range(5):
+    for j in range(5):
+        if map2[i][j] == 1:
+            led.plot(i, j)
 
 def on_forever():
     pass
